@@ -4,8 +4,14 @@ import { observer, inject, disposeOnUnmount } from "mobx-react";
 import NavigatorMap from "../../navigators/NavigatorMap";
 import { StoreNames } from "../../global_store";
 import { utils } from "../../core/utils";
-import { LoginManager, AccessToken } from "react-native-fbsdk";
+import {
+  LoginManager,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager
+} from "react-native-fbsdk";
 import { reaction } from "mobx";
+import axios from "axios";
 
 @inject(StoreNames.Authorization)
 @observer
@@ -40,9 +46,31 @@ class Login extends Component {
         if (result.isCancelled) {
           console.log("Login Cancelled");
         } else {
-          // console.log("Login Success permission granted:", result);
-          AccessToken.getCurrentAccessToken().then(data => {
+          AccessToken.getCurrentAccessToken().then(async data => {
+            let accessToken = data.accessToken;
             setAccessToken(data.accessToken);
+            const responseInfoCallback = (error, result) => {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log(result);
+                axios.post("http://localhost:5000/user/token_auth", result);
+              }
+            };
+            const infoRequest = new GraphRequest(
+              "/me",
+              {
+                accessToken: accessToken,
+                parameters: {
+                  fields: {
+                    string: "email,name,first_name,middle_name,last_name"
+                  }
+                }
+              },
+              responseInfoCallback
+            );
+            // Start the graph request.
+            new GraphRequestManager().addRequest(infoRequest).start();
           });
         }
       },
