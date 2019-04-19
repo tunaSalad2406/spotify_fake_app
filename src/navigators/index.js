@@ -1,18 +1,18 @@
-import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
-import {Home,Login} from "../screen"
-import NavigatorMap from "./NavigatorMap"
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
+import NavigatorMap from "./NavigatorMap";
+import AuthorizedNavigator from "./AuthorizedNavigator";
+import UnAuthorizedNavigator from "./UnAuthorizedNavigator";
 
-const AppStack = createStackNavigator({ [NavigatorMap.Home] : Home });
-const AuthStack = createStackNavigator({ [NavigatorMap.Login]: Login });
+const AppNavigator = createAppContainer(
+  createSwitchNavigator(
+    {
+      [NavigatorMap.App]: AuthorizedNavigator,
+      [NavigatorMap.Auth]: UnAuthorizedNavigator
+    },
+    {
+      initialRouteName: NavigatorMap.Auth
+    }
+  )
+);
 
-  const AppNavigator = createAppContainer(createSwitchNavigator(
-  {
-    [NavigatorMap.App]: AppStack,
-    [NavigatorMap.Auth]: AuthStack,
-  },
-  {
-    initialRouteName: NavigatorMap.Auth,
-  }
-));
-
-export default AppNavigator
+export default AppNavigator;

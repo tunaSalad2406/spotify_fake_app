@@ -22,6 +22,26 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>fb2258148830872110</string>
+      </array>
+    </dict>
+  </array>
+  <key>FacebookAppID</key>
+  <string>2258148830872110</string>
+  <key>FacebookDisplayName</key>
+  <string>Spotify_fake</string>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>fbapi</string>
+    <string>fb-messenger-api</string>
+    <string>fbauth2</string>
+    <string>fbshareextension</string>
+  </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
