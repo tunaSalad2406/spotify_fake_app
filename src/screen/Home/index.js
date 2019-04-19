@@ -18,6 +18,11 @@ class Home extends Component {
   };
 
   render() {
+    const { accessToken } = utils.propsFormInjection(
+      StoreNames.Authorization,
+      this.props
+    );
+    console.log("accessToken.................home.", accessToken);
     return (
       <View style={styles.container}>
         <Text style={styles.instructions}>Home</Text>

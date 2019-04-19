@@ -40,7 +40,7 @@ class Login extends Component {
         if (result.isCancelled) {
           console.log("Login Cancelled");
         } else {
-          console.log("Login Success permission granted:", result);
+          // console.log("Login Success permission granted:", result);
           AccessToken.getCurrentAccessToken().then(data => {
             setAccessToken(data.accessToken);
           });
