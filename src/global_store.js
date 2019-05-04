@@ -1,12 +1,11 @@
-import AuthorizationStore from "./core/store/AuthorizationStore"
+import AuthorizationStore from "./core/store/AuthorizationStore";
 
 export const StoreNames = {
-  // Language: 'LanguageStore',
-  Authorization: 'AuthorizationStore'
+  Authorization: "AuthorizationStore"
 };
 
-export default function rootStoreCreating () {
+export default function rootStoreCreating() {
   return {
-    [StoreNames.Authorization] : new AuthorizationStore()
-  }
+    [StoreNames.Authorization]: new AuthorizationStore()
+  };
 }

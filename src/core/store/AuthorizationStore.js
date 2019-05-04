@@ -1,6 +1,7 @@
 import { AsyncStorage } from "react-native";
-import { observable, action, runInAction, reaction } from "mobx";
-import { AccessToken, LoginManager } from "react-native-fbsdk";
+import { observable, action, runInAction } from "mobx";
+import { LoginManager } from "react-native-fbsdk";
+import api from "../apis";
 class Storage {
   load = async () => {
     try {
@@ -34,27 +35,13 @@ export default class AuthorizationStore {
 
   constructor() {
     this.loadAuth();
-    this.getAccessToken();
   }
-
-  @action
-  getAccessToken = async () => {
-    try {
-      const token = await AccessToken.getCurrentAccessToken();
-      if (!token) {
-        this.setAccessToken("");
-        return;
-      }
-      this.setAccessToken(token.accessToken);
-    } catch (error) {
-      console.log("getAccessToken", error);
-    }
-  };
 
   @action
   setAccessToken = async token => {
     try {
       this.accessToken = token;
+      api.authorizeApi(this.accessToken);
       await this.AsyncStorageStore.save(this.accessToken);
     } catch (error) {
       console.log("setAccessToken", error);
@@ -64,6 +51,7 @@ export default class AuthorizationStore {
   @action
   clearAccessToken = async () => {
     this.accessToken = "";
+    api.authorizeApi(this.accessToken);
     await this.AsyncStorageStore.clear();
     LoginManager.logOut();
     this.loadAuth();
@@ -75,9 +63,11 @@ export default class AuthorizationStore {
       runInAction(() => {
         if (!auth) {
           this.accessToken = "";
+          api.authorizeApi(this.accessToken);
           return;
         }
         this.accessToken = auth;
+        api.authorizeApi(this.accessToken);
       });
     } catch (error) {
       console.log("loadAuth", error);

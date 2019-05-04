@@ -11,8 +11,7 @@ import {
   GraphRequestManager
 } from "react-native-fbsdk";
 import { reaction } from "mobx";
-import axios from "axios";
-
+import api from "../../core/apis";
 @inject(StoreNames.Authorization)
 @observer
 class Login extends Component {
@@ -41,20 +40,23 @@ class Login extends Component {
       StoreNames.Authorization,
       this.props
     );
-    LoginManager.logInWithReadPermissions(["public_profile"]).then(
+    LoginManager.logInWithReadPermissions(["public_profile", "email"]).then(
       function(result) {
         if (result.isCancelled) {
           console.log("Login Cancelled");
         } else {
           AccessToken.getCurrentAccessToken().then(async data => {
-            let accessToken = data.accessToken;
-            setAccessToken(data.accessToken);
-            const responseInfoCallback = (error, result) => {
+            const accessToken = data.accessToken;
+            const responseInfoCallback = async (error, result) => {
               if (error) {
                 console.log(error);
               } else {
-                console.log(result);
-                axios.post("http://localhost:5000/user/token_auth", result);
+                try {
+                  let response = await api.login(accessToken);
+                  setAccessToken(response.data.token);
+                } catch (error) {
+                  console.log(error);
+                }
               }
             };
             const infoRequest = new GraphRequest(
@@ -69,7 +71,6 @@ class Login extends Component {
               },
               responseInfoCallback
             );
-            // Start the graph request.
             new GraphRequestManager().addRequest(infoRequest).start();
           });
         }
@@ -85,11 +86,25 @@ class Login extends Component {
       StoreNames.Authorization,
       this.props
     );
-    console.log("accessToken..................", accessToken);
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._fbAuth}>
-          <Text>Login With Facebook</Text>
+        <Text
+          style={{
+            color: "white",
+            fontSize: 50,
+            fontWeight: "bold",
+            marginBottom: 50
+          }}
+        >
+          Spotify Fake
+        </Text>
+        <TouchableOpacity
+          onPress={this._fbAuth}
+          style={{ padding: 15, backgroundColor: "#3b5998", borderRadius: 5 }}
+        >
+          <Text style={{ color: "white", fontSize: 20 }}>
+            Login With Facebook
+          </Text>
         </TouchableOpacity>
       </View>
     );
@@ -101,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#1DB954"
   },
   welcome: {
     fontSize: 20,

@@ -1,15 +1,17 @@
 import React from "react";
 import { createStackNavigator } from "react-navigation";
-import { Home } from "../screen";
+import { Home, Profile } from "../screen";
 import NavigatorMap from "./NavigatorMap";
-import { observer, disposeOnUnmount, inject } from "mobx-react/native";
+import { observer, disposeOnUnmount, inject, Provider } from "mobx-react";
 import { StoreNames } from "../global_store";
 import { reaction } from "mobx";
 import { utils } from "../core/utils";
+import sharedStoreCreating from "../screen/_shared/stores";
 
 const AuthorizedStack = createStackNavigator(
   {
-    [NavigatorMap.Home]: Home
+    [NavigatorMap.Home]: Home,
+    [NavigatorMap.Profile]: Profile
   },
   {
     defaultNavigationOptions: { header: null }
@@ -42,7 +44,12 @@ class AuthorizedNavigator extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    return <AuthorizedStack navigation={navigation} />;
+    return (
+      // rerender why ?
+      <Provider {...sharedStoreCreating()}>
+        <AuthorizedStack navigation={navigation} />
+      </Provider>
+    );
   }
 }
 

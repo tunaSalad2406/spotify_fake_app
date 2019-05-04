@@ -1,6 +1,7 @@
-export default  NavigatorMap = {
-    Login: "Login",
-    Home:"Home",
-    App:"App",
-    Auth:"Auth"
-}
+export default (NavigatorMap = {
+  Login: "Login",
+  Home: "Home",
+  App: "App",
+  Auth: "Auth",
+  Profile: "Profile"
+});
