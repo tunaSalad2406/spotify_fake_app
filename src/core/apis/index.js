@@ -54,6 +54,14 @@ class API {
       access_token: accessToken
     });
   };
+
+  upvote = postId => {
+    return axios.post(`${API_SERVER}/post/post_detail/${postId}/upvote`);
+  };
+
+  downvote = postId => {
+    return axios.post(`${API_SERVER}/post/post_detail/${postId}/downvote`);
+  };
 }
 
 const api = new API();

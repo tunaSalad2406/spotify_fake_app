@@ -24,6 +24,7 @@ import moment from "moment";
 import api from "../../core/apis";
 import { SharedStoreNames } from "../_shared/stores";
 import { utils } from "../../core/utils";
+import TwitCard from "./components/TwitCard";
 
 @inject(SharedStoreNames.User)
 @observer
@@ -133,57 +134,13 @@ class Profile extends Component {
             {this.posts &&
               this.posts.map((post, key) => {
                 return (
-                  <Card style={{ width: "100%" }}>
-                    <CardItem
-                      header
-                      style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        alignItems: "flex-start"
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={this.navigateDetail}
-                        style={{ width: "50%" }}
-                      >
-                        <Text style={{ fontWeight: "bold" }}>
-                          {post.user.name}
-                        </Text>
-                      </TouchableOpacity>
-                      <View style={{ width: "50%", alignItems: "flex-end" }}>
-                        <Text style={{ fontWeight: "100" }}>
-                          {this.calculateTime(post.createdAt)} minutes ago
-                        </Text>
-                      </View>
-                    </CardItem>
-                    <CardItem>
-                      <Body>
-                        <Text>{post.content}</Text>
-                      </Body>
-                    </CardItem>
-                    <CardItem
-                      footer
-                      style={{
-                        flexDirection: "row",
-                        backgroundColor: "#38A1F3",
-                        justifyContent: "flex-end"
-                      }}
-                    >
-                      <TouchableOpacity>
-                        <Icon
-                          name="ios-add-circle-outline"
-                          style={{ color: "white" }}
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Icon
-                          name="ios-close-circle-outline"
-                          style={{ color: "white" }}
-                        />
-                      </TouchableOpacity>
-                    </CardItem>
-                  </Card>
+                  <TwitCard
+                    post={post}
+                    name={post.user.name}
+                    content={post.content}
+                    createdAt={post.createdAt}
+                    key={key}
+                  />
                 );
               })}
           </ScrollView>
