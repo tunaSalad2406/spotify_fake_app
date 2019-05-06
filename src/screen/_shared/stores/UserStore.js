@@ -12,8 +12,10 @@ export default class UserStore {
   fetchProfile = async () => {
     try {
       let response = await api.getUser();
+
       runInAction(() => {
         this.profile = response.data;
+        alert("this.profile");
       });
     } catch (error) {
       console.log(error);

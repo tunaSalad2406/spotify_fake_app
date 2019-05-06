@@ -65,7 +65,7 @@ class Home extends Component {
           >
             {this.posts &&
               this.posts.map((post, key) => {
-                return <TwitCard post={post} key={key} />;
+                return <TwitCard post={post} key={key} profile={profile} />;
               })}
           </ScrollView>
         </Content>

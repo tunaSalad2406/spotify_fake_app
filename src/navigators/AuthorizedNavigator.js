@@ -6,7 +6,7 @@ import { observer, disposeOnUnmount, inject, Provider } from "mobx-react";
 import { StoreNames } from "../global_store";
 import { reaction } from "mobx";
 import { utils } from "../core/utils";
-import sharedStoreCreating from "../screen/_shared/stores";
+import UserStore from "../screen/_shared/stores/UserStore";
 
 const AuthorizedStack = createStackNavigator(
   {
@@ -22,6 +22,9 @@ const AuthorizedStack = createStackNavigator(
 @observer
 class AuthorizedNavigator extends React.Component {
   static router = { ...AuthorizedStack.router };
+
+  sharedStore = new UserStore();
+
   @disposeOnUnmount
   updateOnAuthorized = reaction(
     () => {
@@ -46,7 +49,7 @@ class AuthorizedNavigator extends React.Component {
     const { navigation } = this.props;
     return (
       // rerender why ?
-      <Provider {...sharedStoreCreating()}>
+      <Provider UserStore={this.sharedStore}>
         <AuthorizedStack navigation={navigation} />
       </Provider>
     );
